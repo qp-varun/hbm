@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path"
 	"strings"
+	"path/filepath"
 
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/go-connections/nat"
@@ -48,7 +49,18 @@ func ContainerCreate(req authorization.Request, config *types.Config) *types.All
 	if len(cc.HostConfig.Binds) > 0 {
 		for _, b := range cc.HostConfig.Binds {
 			vol := strings.Split(b, ":")
-
+			
+			vol[0], _ = filepath.Abs(vol[0])
+			if !AllowVolumePath(vol[0]) {
+				return &types.AllowResult{
+					Allow: false,
+					Msg: map[string]string{
+						"text":           fmt.Sprintf("Volume path %s is illegal", b),
+						"resource_type":  "volume",
+						"resource_value": b,
+					},
+				}
+			}
 			if !AllowVolume(vol[0], config) {
 				return &types.AllowResult{
 					Allow: false,
@@ -405,6 +417,21 @@ func GetPortBindingString(pb *nat.PortBinding) string {
 	}
 
 	return result
+}
+
+func AllowVolumePath(vol string) bool {
+	if strings.Contains(vol, "../") {
+		return false
+	}
+	if strings.Contains(vol, "/..") {
+		return false
+	}
+
+	volevaluated, _ := filepath.EvalSymlinks(vol)
+	if strings.Compare(vol,volevaluated) != 0 {
+		return false
+	}
+	return true
 }
 
 func AllowVolume(vol string, config *types.Config) bool {
