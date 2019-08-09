@@ -22,3 +22,7 @@ type VolumeOptions struct {
 	Recursive bool `json:"recursive"`
 	NoSuid    bool `json:"nosuid"`
 }
+
+type ImageOptions struct {
+	SubImages bool `json:"subimages"`
+}

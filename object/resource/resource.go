@@ -94,6 +94,18 @@ func (c *Config) Add(name, rType, rValue string, rOptions []string) error {
 		opts = jsonR.String()
 	}
 
+	if rType == "image" {
+		io := types.ImageOptions{}
+		if _, ok := options["subimages"]; ok {
+			io.SubImages = true
+			jsonR := json.Encode(io)
+			opts = jsonR.String()
+			if rValue[len(rValue)-1] != '/' {
+				rValue = fmt.Sprintf("%s/", rValue)
+			}
+		}
+	}
+
 	c.Storage.AddResource(name, rType, rValue, strings.TrimSpace(opts))
 
 	return nil

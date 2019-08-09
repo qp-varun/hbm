@@ -2,6 +2,8 @@ package allow
 
 import (
 	"fmt"
+	"path"
+	"strings"
 	"net/url"
 
 	"github.com/docker/go-plugins-helpers/authorization"
@@ -9,8 +11,10 @@ import (
 	"github.com/juliengk/go-log"
 	"github.com/juliengk/go-log/driver"
 	"github.com/juliengk/go-utils"
+	"github.com/juliengk/go-utils/json"
 	"github.com/kassisol/hbm/docker/allow/types"
 	policyobj "github.com/kassisol/hbm/object/policy"
+	objtypes "github.com/kassisol/hbm/object/types"
 	"github.com/kassisol/hbm/version"
 )
 
@@ -73,6 +77,15 @@ func AllowImage(img string, config *types.Config) bool {
 	}
 
 	if p.Validate(config.Username, "image", i.String(), "") {
+		return true
+	}
+
+	io := &objtypes.ImageOptions{SubImages: true}
+	jio := json.Encode(io)
+	opts := strings.TrimSpace(jio.String())
+
+	dir, _ := path.Split(i.String())
+	if len(dir) > 0 && p.Validate(config.Username, "image", dir, opts) {
 		return true
 	}
 
