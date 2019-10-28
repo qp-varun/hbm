@@ -48,3 +48,10 @@ type Policy struct {
 	Collection   Collection
 	CollectionID uint
 }
+
+type ContainerOwner struct {
+	Model
+	User 		User
+	UserID		uint
+	ContainerID 	string `gorm:"unique;"`
+}

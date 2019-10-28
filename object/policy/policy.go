@@ -16,6 +16,7 @@ type Policy interface {
 	Count() int
 	Find(name string) bool
 	Validate(user, rType, rValue, rOptions string) bool
+	ValidateOwner(user, rType, rValue string) bool
 	End()
 }
 
@@ -179,6 +180,15 @@ func (c *Config) Validate(user, rType, rValue, rOptions string) bool {
 
 	if rType == "port" {
 		return c.allowPort(user, rValue) || c.allowPort("all", rValue)
+	}
+
+	return false
+}
+
+func (c *Config) ValidateOwner(user, rType, rValue string) bool {
+	switch (rType) {
+	case "containers":
+		return c.Storage.IsContainerOwner(user, rValue)
 	}
 
 	return false

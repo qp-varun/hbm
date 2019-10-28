@@ -44,5 +44,8 @@ type Storager interface {
 	FindPolicy(name string) bool
 	CountPolicy() int
 
+	IsContainerOwner(username, containerid string) bool
+	SetContainerOwner(username, name, containerid string) error
+
 	End()
 }
