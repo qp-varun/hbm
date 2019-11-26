@@ -2,6 +2,7 @@ package allow
 
 import (
 	"fmt"
+	"net"
 	"path"
 	"strings"
 
@@ -397,10 +398,15 @@ func ContainerCreate(req authorization.Request, config *types.Config) *types.All
 	return &types.AllowResult{Allow: true}
 }
 
+func ipisany(ipstr string) bool {
+	ip := net.ParseIP(ipstr)
+	return ip.IsUnspecified()
+}
+
 func GetPortBindingString(pb *nat.PortBinding) string {
 	result := pb.HostPort
 
-	if len(pb.HostIP) > 0 {
+	if len(pb.HostIP) > 0 && !ipisany(pb.HostIP) {
 		result = fmt.Sprintf("%s:%s", pb.HostIP, pb.HostPort)
 	}
 
