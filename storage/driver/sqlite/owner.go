@@ -16,14 +16,10 @@ func (c *Config) SetContainerOwner(username, name, containerid string) error {
 		ContainerID: containerid,
 		User: user,
 	}
-	c.DB.Model(&ContainerOwner{}).Create(&co)
 	if len(name) > 1 {
-		con := ContainerOwner{
-			ContainerID: fmt.Sprintf("name:%s", name),
-			User: user,
-		}
-		c.DB.Model(&ContainerOwner{}).Create(&con)
+		co.Name = name
 	}
+	c.DB.Model(&ContainerOwner{}).Create(&co)
 	
 	return nil
 }
@@ -61,4 +57,16 @@ func (c *Config) IsContainerOwner(username, containerid string) bool {
 		return true
 	}
 	return false
+}
+
+func (c *Config) RemoveContainerOwner(username, name, containerid string) error {
+	fmt.Println("entered RemoveContainerOwner")
+	c.DB.Model(&ContainerOwner{}).Where("containerid = ?", containerid).Delete(ContainerOwner{})
+	if len(name) > 0 {
+		fmt.Print("removing container name")
+		cn := fmt.Sprintf("name:%s", name)
+		c.DB.Where("containerid = ?", cn).Delete(ContainerOwner{})
+	}
+	
+	return nil
 }

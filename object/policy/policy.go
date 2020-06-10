@@ -193,3 +193,10 @@ func (c *Config) ValidateOwner(user, rType, rValue string) bool {
 
 	return false
 }
+
+/*func (c *Config) RemoveOwner(user, rType, rValue string) bool {
+	if rType != "containers" {
+		return false
+	}
+	return c.Storage.RemoveContainerOwner(user, rValue)
+}*/

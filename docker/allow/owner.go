@@ -11,6 +11,19 @@ import (
 	"github.com/kassisol/hbm/version"
 )
 
+func getcontainerid(p string) (bool, string) {
+	ts := strings.Trim(p, "/")
+	up := strings.Split(ts, "/") // api version / type / id
+	if len(up) < 3 {
+		return false, ""
+	}
+	if up[1] != "containers" {
+		return false, ""
+	}
+
+	return true, up[2]
+}
+
 func ContainerOwner(req authorization.Request, config *types.Config) *types.AllowResult {
 	ar := &types.AllowResult{Allow: false}
 
@@ -31,16 +44,29 @@ func ContainerOwner(req authorization.Request, config *types.Config) *types.Allo
 		return ar
 	}
 
-	ts := strings.Trim(u.Path, "/")
-	up := strings.Split(ts, "/") // api version / type / id
-	if len(up) < 3 {
+	corr, up := getcontainerid(u.Path)
+	if corr == false {
 		return ar
 	}
-	if up[1] != "containers" {
-		return ar
+	
+	ar.Allow = p.ValidateOwner(config.Username, "containers", up)
+	if !ar.Allow {
+		ar.Error = "you are not the owner of the container"
 	}
-
-	ar.Allow = p.ValidateOwner(config.Username, "containers", up[2])
-
+	
 	return ar
 }
+
+/*func RemoveIfOwner(req authorization.Request, config *types.Config) *types.AllowResult {
+	ar := &ContainerOwner(req, config)
+	if ar.Allow == false {
+		return ar
+	}
+
+	corr, up := getcontainerid(u.Path)
+	if corr == false {
+		return ar
+	}
+	
+	return ar
+}*/

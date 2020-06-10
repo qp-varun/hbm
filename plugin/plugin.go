@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"fmt"
 	"net/url"
 	"regexp"
 	"encoding/json"
@@ -76,6 +77,22 @@ func (p *plugin) iscreatecontainer(req authorization.Request, u *url.URL) bool {
 	return false
 }
 
+func (p *plugin) isremovecontainer(req authorization.Request, u *url.URL) bool {
+	fmt.Println("entering isremovecontainer")
+	if req.ResponseStatusCode != 204 {
+		return false
+	}
+	//fmt.Println("is url:", u)
+	avm := regexp.MustCompile("^/v\\d+\\.\\d+/containers/[^/]+")
+	if avm.MatchString(u.Path) && req.RequestMethod == "DELETE" {
+		fmt.Println("it is removecontainer:", u.Path)
+		fmt.Println("isremovecontainer req:", req)
+		return true
+	}
+
+	return false
+}
+
 func (p *plugin) setcontainerowner(cname string, req authorization.Request) error {
 	username := req.User
 	if username == "" {
@@ -102,6 +119,34 @@ func (p *plugin) setcontainerowner(cname string, req authorization.Request) erro
 	return nil
 }
 
+func (p *plugin) removecontainerowner(cname string, req authorization.Request) error {
+	username := req.User
+	if username == "" {
+		username = "root"
+	}
+
+        s, err := storage.NewDriver("sqlite", p.appPath)
+        if err != nil {
+                return err
+        }
+	
+	var rjson struct {
+		Id string
+	}
+	err = json.Unmarshal(req.ResponseBody, &rjson)
+	if err != nil {
+		fmt.Println("rm cnt json:", err, string(req.ResponseBody))
+		return err
+	}
+
+	fmt.Println("calling s.RemoveContainerOwner")
+	s.RemoveContainerOwner(username, cname, rjson.Id)
+
+	//fmt.Println("did owner with:", username, cname, rjson.Id)
+
+	return nil
+}
+
 func (p *plugin) AuthZRes(req authorization.Request) authorization.Response {
 	//fmt.Println("resp uri real:", req.RequestURI)
 	//fmt.Println("req body:", string(req.RequestBody))
@@ -118,6 +163,11 @@ func (p *plugin) AuthZRes(req authorization.Request) authorization.Response {
 		//fmt.Print("setting owner for", cname)
 		err = p.setcontainerowner(cname, req)
 		//fmt.Println("setcontainterowner err:", err)
+	}
+
+	if p.isremovecontainer(req, u) {
+		fmt.Println("calling p.removecontainerowner")
+		err = p.removecontainerowner(cname, req)
 	}
 
 	return authorization.Response{Allow: true}
