@@ -61,12 +61,9 @@ func (c *Config) IsContainerOwner(username, containerid string) bool {
 
 func (c *Config) RemoveContainerOwner(username, name, containerid string) error {
 	fmt.Println("entered RemoveContainerOwner")
-	c.DB.Model(&ContainerOwner{}).Where("containerid = ?", containerid).Delete(ContainerOwner{})
-	if len(name) > 0 {
-		fmt.Print("removing container name")
-		cn := fmt.Sprintf("name:%s", name)
-		c.DB.Where("containerid = ?", cn).Delete(ContainerOwner{})
-	}
-	
+        
+	c.DB.Delete(ContainerOwner{}, "container_id LIKE ?", "%" + containerid + "%")	
+	c.DB.Where("name = ?", containerid).Delete(&ContainerOwner{})
+
 	return nil
 }
