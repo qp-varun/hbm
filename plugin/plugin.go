@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"encoding/json"
         "github.com/kassisol/hbm/storage"
-
+	"strings"
 	"github.com/docker/go-plugins-helpers/authorization"
 	"github.com/kassisol/hbm/pkg/uri"
 )
@@ -129,18 +129,25 @@ func (p *plugin) removecontainerowner(cname string, req authorization.Request) e
         if err != nil {
                 return err
         }
+
 	
-	var rjson struct {
-		Id string
-	}
-	err = json.Unmarshal(req.ResponseBody, &rjson)
+	u, err := url.Parse(req.RequestURI)
 	if err != nil {
-		fmt.Println("rm cnt json:", err, string(req.ResponseBody))
-		return err
+		return  err
 	}
+	
+	ts := strings.Trim(u.Path, "/")
+	up := strings.Split(ts, "/") // api version / type / id
+	if len(up) < 3 {
+		return nil
+	}
+	if up[1] != "containers" {
+		return nil
+	}
+	
 
 	fmt.Println("calling s.RemoveContainerOwner")
-	s.RemoveContainerOwner(username, cname, rjson.Id)
+	s.RemoveContainerOwner(username, cname, up[2])
 
 	//fmt.Println("did owner with:", username, cname, rjson.Id)
 
