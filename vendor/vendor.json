@@ -183,22 +183,22 @@
 			"revisionTime": "2014-10-17T20:07:13Z"
 		},
 		{
-			"checksumSHA1": "J1rPcWVfwWQC5d4tU6qOXTvN5rc=",
+			"checksumSHA1": "kg5aMJr0+79lV6JbDORsU9zpaEI=",
 			"path": "github.com/jinzhu/gorm",
-			"revision": "9044197ef935c0969d94cbcfba55ccb94d269bed",
-			"revisionTime": "2018-05-02T14:38:52Z"
+			"revision": "466b344ff5924029ad8426073ba5064093e18a22",
+			"revisionTime": "2020-09-21T02:28:17Z"
 		},
 		{
 			"checksumSHA1": "4VZ1gLZHMumRjV3fclS1aX8S1aQ=",
 			"path": "github.com/jinzhu/gorm/dialects/sqlite",
-			"revision": "9044197ef935c0969d94cbcfba55ccb94d269bed",
-			"revisionTime": "2018-05-02T14:38:52Z"
+			"revision": "466b344ff5924029ad8426073ba5064093e18a22",
+			"revisionTime": "2020-09-21T02:28:17Z"
 		},
 		{
-			"checksumSHA1": "4eelJOSLZoDzLuaJvgilOBVNovU=",
+			"checksumSHA1": "lNDtF/TajctBMzkzu85wBDvySOY=",
 			"path": "github.com/jinzhu/inflection",
-			"revision": "04140366298a54a039076d798123ffa108fff46c",
-			"revisionTime": "2018-03-08T03:36:59Z"
+			"revision": "b5281034e75ed100658f8d9d0b2837f3fad4e8b3",
+			"revisionTime": "2021-01-11T02:29:12Z"
 		},
 		{
 			"checksumSHA1": "QJ9viP4pJ+snRnt+WKmZL4+Dj9M=",
@@ -261,10 +261,10 @@
 			"revisionTime": "2018-03-21T16:21:44Z"
 		},
 		{
-			"checksumSHA1": "VibJh/oNzIw3tY0PCgReKMzrxf0=",
+			"checksumSHA1": "Cl3cgI/CaltMtZHiweeL11Gnw7I=",
 			"path": "github.com/mattn/go-sqlite3",
-			"revision": "a72efd674f654961a11ac41aae72c0e43963fe6c",
-			"revisionTime": "2018-04-19T07:32:57Z"
+			"revision": "ab91e9342b029f7b8d6097257c9a7874153a5b3f",
+			"revisionTime": "2021-02-18T14:17:00Z"
 		},
 		{
 			"checksumSHA1": "VnkNO/q6ZVTYCd/F7nmHosHC5a4=",
