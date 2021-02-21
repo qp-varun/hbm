@@ -14,13 +14,13 @@ ARG ARCH=${HOST_ARCH}
 
 ARG APP_REPO=kassisol
 
-ARG docker_version=18.03.0
+ARG docker_version=20.10.3
 
 # Set up environment and export all ARGS as ENV
 ENV ARCH=${ARCH} \
 	HOST_ARCH=${HOST_ARCH}
 
-ENV DOCKER_COMPOSE_VERSION=1.14.0 \
+ENV DOCKER_COMPOSE_VERSION=1.28.4 \
 	DAPPER_HOST_ARCH=${DAPPER_HOST_ARCH}
 
 # Install Docker

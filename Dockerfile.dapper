@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:stable-slim
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
@@ -23,9 +23,9 @@ ARG ARCH=${HOST_ARCH}
 
 ARG APP_REPO=kassisol
 
-ARG docker_version=18.03.0
+ARG docker_version=20.10.3
 
-ARG DOCKER_URL_amd64=https://download.docker.com/linux/static/stable/x86_64/docker-${docker_version}-ce.tgz
+ARG DOCKER_URL_amd64=https://download.docker.com/linux/static/stable/x86_64/docker-${docker_version}.tgz
 
 # Set up environment and export all ARGS as ENV
 ENV ARCH=${ARCH} \
@@ -35,7 +35,7 @@ ENV DOCKER_URL=${DOCKER_URL_amd64} \
 	DAPPER_HOST_ARCH=${DAPPER_HOST_ARCH} \
 	GOPATH=/go \
 	GOARCH=$ARCH \
-	GO_VERSION=1.8.3
+	GO_VERSION=1.15.8
 
 ENV PATH=/go/bin:/usr/local/go/bin:$PATH
 
