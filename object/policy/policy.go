@@ -186,7 +186,7 @@ func (c *Config) Validate(user, rType, rValue, rOptions string) bool {
 }
 
 func (c *Config) ValidateOwner(user, rType, rValue string) bool {
-	switch (rType) {
+	switch rType {
 	case "containers":
 		return c.Storage.IsContainerOwner(user, rValue)
 	}

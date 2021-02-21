@@ -2,9 +2,9 @@ package allow
 
 import (
 	"fmt"
+	"net/url"
 	"path"
 	"strings"
-	"net/url"
 
 	"github.com/docker/go-plugins-helpers/authorization"
 	"github.com/juliengk/go-docker/image"

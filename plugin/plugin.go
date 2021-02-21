@@ -1,10 +1,10 @@
 package plugin
 
 import (
+	"encoding/json"
+	"github.com/kassisol/hbm/storage"
 	"net/url"
 	"regexp"
-	"encoding/json"
-        "github.com/kassisol/hbm/storage"
 
 	"github.com/docker/go-plugins-helpers/authorization"
 	"github.com/kassisol/hbm/pkg/uri"
@@ -82,10 +82,10 @@ func (p *plugin) setcontainerowner(cname string, req authorization.Request) erro
 		username = "root"
 	}
 
-        s, err := storage.NewDriver("sqlite", p.appPath)
-        if err != nil {
-                return err
-        }
+	s, err := storage.NewDriver("sqlite", p.appPath)
+	if err != nil {
+		return err
+	}
 
 	var rjson struct {
 		Id string

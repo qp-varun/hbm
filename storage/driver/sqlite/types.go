@@ -51,7 +51,7 @@ type Policy struct {
 
 type ContainerOwner struct {
 	Model
-	User 		User
-	UserID		uint
-	ContainerID 	string `gorm:"unique;"`
+	User        User
+	UserID      uint
+	ContainerID string `gorm:"unique;"`
 }
