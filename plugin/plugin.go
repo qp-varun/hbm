@@ -2,12 +2,12 @@ package plugin
 
 import (
 	"encoding/json"
-	"github.com/kassisol/hbm/storage"
 	"net/url"
 	"regexp"
 
 	"github.com/docker/go-plugins-helpers/authorization"
 	"github.com/kassisol/hbm/pkg/uri"
+	"github.com/kassisol/hbm/storage"
 )
 
 type plugin struct {
@@ -86,6 +86,7 @@ func (p *plugin) setcontainerowner(cname string, req authorization.Request) erro
 	if err != nil {
 		return err
 	}
+	defer s.End()
 
 	var rjson struct {
 		Id string
