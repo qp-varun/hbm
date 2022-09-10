@@ -11,7 +11,7 @@ require (
 	github.com/juliengk/go-log v0.0.0-20171002012451-57b916563bbb
 	github.com/juliengk/go-mount v0.0.0-20170406141235-e7123cbaaaf6
 	github.com/juliengk/go-utils v0.0.0-00010101000000-000000000000
-	github.com/sirupsen/logrus v1.0.6-0.20180329225952-778f2e774c72
+	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cobra v1.5.0
 )
 
@@ -33,12 +33,9 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.8.0 // indirect
-	golang.org/x/crypto v0.0.0-20191205180655-e7c4368fe9dd // indirect
 	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e // indirect
-	golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd // indirect
+	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
 	golang.org/x/text v0.3.0 // indirect
-	gopkg.in/airbrake/gobrake.v2 v2.0.9 // indirect
-	gopkg.in/gemnasium/logrus-airbrake-hook.v2 v2.1.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gotest.tools v2.2.0+incompatible // indirect
 )
