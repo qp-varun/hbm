@@ -7,8 +7,7 @@ import (
 )
 
 func FileExists(f string) bool {
-	_, err := os.Lstat(f)
-	if err != nil {
+	if _, err := os.Lstat(f); err != nil {
 		return false
 	}
 
@@ -16,8 +15,8 @@ func FileExists(f string) bool {
 }
 
 func IsSymlink(f string) (bool, string, error) {
-	t := false
-	link := ""
+	var t bool
+	var link string
 
 	fi, err := os.Lstat(f)
 	if err != nil {
