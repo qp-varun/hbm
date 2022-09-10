@@ -98,6 +98,8 @@ func GetUris() *uri.URIs {
 	uris.Register("DELETE", `^/secrets/(.+)`, allow.True, "secret_remove", "secret rm", "Delete a secret")
 	uris.Register("POST", `^/secrets/(.+)/update`, allow.True, "secret_update", "secret update", "Update a secret")
 
+	uris.Register("POST", `^/session`, allow.True, "session", "session", "Initialize interactive session")
+
 	uris.Register("GET", `^/configs`, allow.True, "config_list", "config ls", "List configs")
 	uris.Register("POST", `^/configs/create`, allow.True, "config_create", "config create", "Create a config")
 	uris.Register("GET", `^/configs/(.+)`, allow.True, "config_inspect", "config inspect", "Inspect a config")
