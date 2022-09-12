@@ -8,7 +8,6 @@ require (
 	github.com/docker/go-plugins-helpers v0.0.0-20211224144127-6eecb7beb651
 	github.com/jinzhu/gorm v1.9.17-0.20200921022817-466b344ff592
 	github.com/juliengk/go-docker v0.0.0-20180321163138-f5cda316edb7
-	github.com/juliengk/go-log v0.0.0-20171002012451-57b916563bbb
 	github.com/juliengk/go-mount v0.0.0-20170406141235-e7123cbaaaf6
 	github.com/juliengk/go-utils v0.0.0-00010101000000-000000000000
 	github.com/sirupsen/logrus v1.9.0
@@ -45,7 +44,5 @@ require (
 replace github.com/juliengk/go-utils => github.com/jonasbroms/go-utils v0.0.0-20220910194142-e74a4beb9866
 
 replace github.com/juliengk/go-docker => github.com/kassisol/go-docker v0.0.0-20180321163138-f5cda316edb7
-
-replace github.com/juliengk/go-log => github.com/kassisol/go-log v0.0.0-20171002012451-57b916563bbb
 
 replace github.com/juliengk/go-mount => github.com/kassisol/go-mount v0.0.0-20170406141235-e7123cbaaaf6

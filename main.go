@@ -17,17 +17,16 @@
 package main
 
 import (
-	"github.com/juliengk/go-log"
 	"github.com/juliengk/go-utils/user"
 	"github.com/kassisol/hbm/cli/command"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
 	u := user.New()
-	l, _ := log.NewDriver("standard", nil)
 
 	if !u.IsRoot() {
-		l.Error("You must be root to run that command")
+		log.Error("You must be root to run that command")
 	}
 
 	cmd := command.NewHBMCommand()

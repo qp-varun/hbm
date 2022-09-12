@@ -4,8 +4,6 @@ import (
 	"runtime/debug"
 
 	"github.com/docker/go-plugins-helpers/authorization"
-	"github.com/juliengk/go-log"
-	"github.com/juliengk/go-log/driver"
 	"github.com/kassisol/hbm/docker/allow"
 	"github.com/kassisol/hbm/docker/allow/types"
 	"github.com/kassisol/hbm/docker/endpoint"
@@ -13,6 +11,7 @@ import (
 	groupobj "github.com/kassisol/hbm/object/group"
 	"github.com/kassisol/hbm/pkg/uri"
 	"github.com/kassisol/hbm/version"
+	log "github.com/sirupsen/logrus"
 )
 
 type Api struct {
@@ -28,11 +27,9 @@ func NewApi(uriinfo *uri.URIInfo, appPath string) (*Api, error) {
 }
 
 func (a *Api) Allow(req authorization.Request) (ar *types.AllowResult) {
-	l, _ := log.NewDriver("standard", nil)
-
 	s, err := configobj.New("sqlite", a.AppPath)
 	if err != nil {
-		l.WithFields(driver.Fields{
+		log.WithFields(log.Fields{
 			"storagedriver": "sqlite",
 			"logdriver":     "standard",
 			"version":       version.Version,
@@ -42,7 +39,7 @@ func (a *Api) Allow(req authorization.Request) (ar *types.AllowResult) {
 
 	g, err := groupobj.New("sqlite", a.AppPath)
 	if err != nil {
-		l.WithFields(driver.Fields{
+		log.WithFields(log.Fields{
 			"storagedriver": "sqlite",
 			"logdriver":     "standard",
 			"version":       version.Version,
@@ -52,8 +49,8 @@ func (a *Api) Allow(req authorization.Request) (ar *types.AllowResult) {
 
 	defer func() {
 		if r := recover(); r != nil {
-			l.Warn("Recovered panic: ", r)
-			l.Warnf("%s", debug.Stack())
+			log.Warn("Recovered panic: ", r)
+			log.Warnf("%s", debug.Stack())
 
 			allow, _ := s.Get("default-allow-action-error")
 			err := "an error occurred; contact your system administrator"
@@ -106,7 +103,7 @@ func (a *Api) Allow(req authorization.Request) (ar *types.AllowResult) {
 	}
 
 	// Log event
-	fields := driver.Fields{
+	fields := log.Fields{
 		"user":          username,
 		"admin":         isAdmin,
 		"allowed":       r.Allow,
@@ -127,7 +124,7 @@ func (a *Api) Allow(req authorization.Request) (ar *types.AllowResult) {
 		}
 	}
 
-	l.WithFields(fields).Info()
+	log.WithFields(fields).Info()
 
 	// If Docker command is not allowed, return
 	if !r.Allow {

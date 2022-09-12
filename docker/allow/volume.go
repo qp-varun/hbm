@@ -5,13 +5,12 @@ import (
 
 	"github.com/docker/docker/api/types/volume"
 	"github.com/docker/go-plugins-helpers/authorization"
-	"github.com/juliengk/go-log"
-	"github.com/juliengk/go-log/driver"
 	"github.com/juliengk/go-utils"
 	"github.com/juliengk/go-utils/json"
 	"github.com/kassisol/hbm/docker/allow/types"
 	policyobj "github.com/kassisol/hbm/object/policy"
 	"github.com/kassisol/hbm/version"
+	log "github.com/sirupsen/logrus"
 )
 
 func VolumeCreate(req authorization.Request, config *types.Config) *types.AllowResult {
@@ -24,11 +23,9 @@ func VolumeCreate(req authorization.Request, config *types.Config) *types.AllowR
 
 	defer utils.RecoverFunc()
 
-	l, _ := log.NewDriver("standard", nil)
-
 	p, err := policyobj.New("sqlite", config.AppPath)
 	if err != nil {
-		l.WithFields(driver.Fields{
+		log.WithFields(log.Fields{
 			"storagedriver": "sqlite",
 			"logdriver":     "standard",
 			"version":       version.Version,

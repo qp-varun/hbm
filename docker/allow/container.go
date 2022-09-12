@@ -9,8 +9,6 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/go-connections/nat"
 	"github.com/docker/go-plugins-helpers/authorization"
-	"github.com/juliengk/go-log"
-	"github.com/juliengk/go-log/driver"
 	"github.com/juliengk/go-mount"
 	"github.com/juliengk/go-utils"
 	"github.com/juliengk/go-utils/json"
@@ -18,6 +16,7 @@ import (
 	policyobj "github.com/kassisol/hbm/object/policy"
 	objtypes "github.com/kassisol/hbm/object/types"
 	"github.com/kassisol/hbm/version"
+	log "github.com/sirupsen/logrus"
 )
 
 func ContainerCreate(req authorization.Request, config *types.Config) *types.AllowResult {
@@ -25,8 +24,6 @@ func ContainerCreate(req authorization.Request, config *types.Config) *types.All
 		container.Config
 		HostConfig container.HostConfig
 	}
-
-	l, _ := log.NewDriver("standard", nil)
 
 	cc := &ContainerCreateConfig{}
 
@@ -38,7 +35,7 @@ func ContainerCreate(req authorization.Request, config *types.Config) *types.All
 
 	p, err := policyobj.New("sqlite", config.AppPath)
 	if err != nil {
-		l.WithFields(driver.Fields{
+		log.WithFields(log.Fields{
 			"storagedriver": "sqlite",
 			"logdriver":     "standard",
 			"version":       version.Version,
@@ -416,11 +413,9 @@ func GetPortBindingString(pb *nat.PortBinding) string {
 func AllowVolume(vol string, config *types.Config) bool {
 	defer utils.RecoverFunc()
 
-	l, _ := log.NewDriver("standard", nil)
-
 	p, err := policyobj.New("sqlite", config.AppPath)
 	if err != nil {
-		l.WithFields(driver.Fields{
+		log.WithFields(log.Fields{
 			"storagedriver": "sqlite",
 			"logdriver":     "standard",
 			"version":       version.Version,

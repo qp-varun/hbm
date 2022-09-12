@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -10,16 +9,13 @@ import (
 	"syscall"
 
 	"github.com/docker/go-plugins-helpers/authorization"
-	"github.com/juliengk/go-log"
-	"github.com/juliengk/go-log/driver"
 	"github.com/juliengk/go-utils/filedir"
 	"github.com/kassisol/hbm/pkg/adf"
 	"github.com/kassisol/hbm/plugin"
 	"github.com/kassisol/hbm/version"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
-
-var serverConfig string
 
 func NewServerCommand() *cobra.Command {
 	cmd := &cobra.Command{
@@ -38,14 +34,7 @@ func serverInitConfig() {
 	dockerPluginFile := path.Join(dockerPluginPath, "hbm.spec")
 	pluginSpecContent := []byte("unix://run/docker/plugins/hbm.sock")
 
-	l, err := log.NewDriver("standard", nil)
-	if err != nil {
-		fmt.Println(err)
-
-		os.Exit(-1)
-	}
-
-	_, err = exec.LookPath("docker")
+	_, err := exec.LookPath("docker")
 	if err != nil {
 		fmt.Println("Docker does not seem to be installed. Please check your installation.")
 
@@ -53,27 +42,20 @@ func serverInitConfig() {
 	}
 
 	if err := filedir.CreateDirIfNotExist(dockerPluginPath, false, 0755); err != nil {
-		l.Fatal(err)
+		log.Fatal(err)
 	}
 
 	if !filedir.FileExists(dockerPluginFile) {
-		err := ioutil.WriteFile(dockerPluginFile, pluginSpecContent, 0644)
+		err := os.WriteFile(dockerPluginFile, pluginSpecContent, 0644)
 		if err != nil {
-			l.Fatal(err)
+			log.Fatal(err)
 		}
 	}
 
-	l.Info("Server has completed initialization")
+	log.Info("Server has completed initialization")
 }
 
 func runStart(cmd *cobra.Command, args []string) {
-	l, err := log.NewDriver("standard", nil)
-	if err != nil {
-		fmt.Println(err)
-
-		os.Exit(-1)
-	}
-
 	serverInitConfig()
 
 	ch := make(chan os.Signal, 1)
@@ -83,23 +65,23 @@ func runStart(cmd *cobra.Command, args []string) {
 	go func() {
 		p, err := plugin.NewPlugin(adf.AppPath)
 		if err != nil {
-			l.Fatal(err)
+			log.Fatal(err)
 		}
 
 		h := authorization.NewHandler(p)
 
-		l.WithFields(driver.Fields{
+		log.WithFields(log.Fields{
 			"storagedriver": "sqlite",
 			"logdriver":     "standard",
 			"version":       version.Version,
 		}).Info("HBM server")
 
-		l.Info("Listening on socket file")
-		l.Fatal(h.ServeUnix("hbm", 0))
+		log.Info("Listening on socket file")
+		log.Fatal(h.ServeUnix("hbm", 0))
 	}()
 
 	s := <-ch
-	l.Infof("Processing signal '%s'", s)
+	log.Infof("Processing signal '%s'", s)
 }
 
 var serverDescription = `

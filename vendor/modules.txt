@@ -61,11 +61,6 @@ github.com/jinzhu/inflection
 # github.com/juliengk/go-docker v0.0.0-20180321163138-f5cda316edb7 => github.com/kassisol/go-docker v0.0.0-20180321163138-f5cda316edb7
 ## explicit
 github.com/juliengk/go-docker/image
-# github.com/juliengk/go-log v0.0.0-20171002012451-57b916563bbb => github.com/kassisol/go-log v0.0.0-20171002012451-57b916563bbb
-## explicit
-github.com/juliengk/go-log
-github.com/juliengk/go-log/driver
-github.com/juliengk/go-log/driver/standard
 # github.com/juliengk/go-mount v0.0.0-20170406141235-e7123cbaaaf6 => github.com/kassisol/go-mount v0.0.0-20170406141235-e7123cbaaaf6
 ## explicit
 github.com/juliengk/go-mount
@@ -130,5 +125,4 @@ gopkg.in/yaml.v2
 ## explicit; go 1.13
 # github.com/juliengk/go-utils => github.com/jonasbroms/go-utils v0.0.0-20220910194142-e74a4beb9866
 # github.com/juliengk/go-docker => github.com/kassisol/go-docker v0.0.0-20180321163138-f5cda316edb7
-# github.com/juliengk/go-log => github.com/kassisol/go-log v0.0.0-20171002012451-57b916563bbb
 # github.com/juliengk/go-mount => github.com/kassisol/go-mount v0.0.0-20170406141235-e7123cbaaaf6
