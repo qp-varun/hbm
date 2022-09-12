@@ -1,14 +1,15 @@
 package allow
 
 import (
+	"net/url"
+	"strings"
+
 	"github.com/docker/go-plugins-helpers/authorization"
 	"github.com/juliengk/go-log"
-	logdriver "github.com/juliengk/go-log/driver"
+	"github.com/juliengk/go-log/driver"
 	"github.com/kassisol/hbm/docker/allow/types"
 	policyobj "github.com/kassisol/hbm/object/policy"
 	"github.com/kassisol/hbm/version"
-	"net/url"
-	"strings"
 )
 
 func ContainerOwner(req authorization.Request, config *types.Config) *types.AllowResult {
@@ -18,7 +19,7 @@ func ContainerOwner(req authorization.Request, config *types.Config) *types.Allo
 
 	p, err := policyobj.New("sqlite", config.AppPath)
 	if err != nil {
-		l.WithFields(logdriver.Fields{
+		l.WithFields(driver.Fields{
 			"storagedriver": "sqlite",
 			"logdriver":     "standard",
 			"version":       version.Version,

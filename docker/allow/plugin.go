@@ -7,7 +7,7 @@ import (
 	"github.com/docker/go-plugins-helpers/authorization"
 	"github.com/juliengk/go-docker/image"
 	"github.com/juliengk/go-log"
-	logdriver "github.com/juliengk/go-log/driver"
+	"github.com/juliengk/go-log/driver"
 	"github.com/kassisol/hbm/docker/allow/types"
 	policyobj "github.com/kassisol/hbm/object/policy"
 	"github.com/kassisol/hbm/version"
@@ -22,7 +22,7 @@ func PluginPull(req authorization.Request, config *types.Config) *types.AllowRes
 		return &types.AllowResult{
 			Allow: false,
 			Msg: map[string]string{
-				"text": fmt.Sprintf("Could not parse URL query"),
+				"text": fmt.Sprintf("Could not parse URL query %s", req.RequestURI),
 			},
 		}
 	}
@@ -44,7 +44,7 @@ func PluginPull(req authorization.Request, config *types.Config) *types.AllowRes
 
 	p, err := policyobj.New("sqlite", config.AppPath)
 	if err != nil {
-		l.WithFields(logdriver.Fields{
+		l.WithFields(driver.Fields{
 			"storagedriver": "sqlite",
 			"logdriver":     "standard",
 			"version":       version.Version,

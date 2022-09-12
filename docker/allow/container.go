@@ -10,7 +10,7 @@ import (
 	"github.com/docker/go-connections/nat"
 	"github.com/docker/go-plugins-helpers/authorization"
 	"github.com/juliengk/go-log"
-	logdriver "github.com/juliengk/go-log/driver"
+	"github.com/juliengk/go-log/driver"
 	"github.com/juliengk/go-mount"
 	"github.com/juliengk/go-utils"
 	"github.com/juliengk/go-utils/json"
@@ -38,7 +38,7 @@ func ContainerCreate(req authorization.Request, config *types.Config) *types.All
 
 	p, err := policyobj.New("sqlite", config.AppPath)
 	if err != nil {
-		l.WithFields(logdriver.Fields{
+		l.WithFields(driver.Fields{
 			"storagedriver": "sqlite",
 			"logdriver":     "standard",
 			"version":       version.Version,
@@ -420,7 +420,7 @@ func AllowVolume(vol string, config *types.Config) bool {
 
 	p, err := policyobj.New("sqlite", config.AppPath)
 	if err != nil {
-		l.WithFields(logdriver.Fields{
+		l.WithFields(driver.Fields{
 			"storagedriver": "sqlite",
 			"logdriver":     "standard",
 			"version":       version.Version,
