@@ -76,4 +76,15 @@ dockerlint:
 		docker container run -i --rm hadolint/hadolint hadolint --ignore DL3018 --ignore DL3013 - < $$file; \
 	done;
 
+.PHONY: format
+format:
+	@for file in $(shell find . -name '*.go' -type f -not -path "./.git/*" -not -path "./vendor/*"); do \
+		echo "Formatting: $$file"; \
+		gofmt -l -s -w "$$file"; \
+		if [ $$? -gt 0 ]; then \
+			continue; \
+		fi; \
+	done;
+
+
 .DEFAULT_GOAL := ci
