@@ -30,9 +30,7 @@ func (a *Api) Allow(req authorization.Request) (ar *types.AllowResult) {
 	s, err := configobj.New("sqlite", a.AppPath)
 	if err != nil {
 		log.WithFields(log.Fields{
-			"storagedriver": "sqlite",
-			"logdriver":     "standard",
-			"version":       version.Version,
+			"version": version.Version,
 		}).Fatal(err)
 	}
 	defer s.End()
@@ -40,9 +38,7 @@ func (a *Api) Allow(req authorization.Request) (ar *types.AllowResult) {
 	g, err := groupobj.New("sqlite", a.AppPath)
 	if err != nil {
 		log.WithFields(log.Fields{
-			"storagedriver": "sqlite",
-			"logdriver":     "standard",
-			"version":       version.Version,
+			"version": version.Version,
 		}).Fatal(err)
 	}
 	defer g.End()

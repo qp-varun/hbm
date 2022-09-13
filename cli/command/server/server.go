@@ -71,9 +71,7 @@ func runStart(cmd *cobra.Command, args []string) {
 		h := authorization.NewHandler(p)
 
 		log.WithFields(log.Fields{
-			"storagedriver": "sqlite",
-			"logdriver":     "standard",
-			"version":       version.Version,
+			"version": version.Version,
 		}).Info("HBM server")
 
 		log.Info("Listening on socket file")

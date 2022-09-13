@@ -27,9 +27,7 @@ func ServiceCreate(req authorization.Request, config *types.Config) *types.Allow
 	p, err := policyobj.New("sqlite", config.AppPath)
 	if err != nil {
 		log.WithFields(log.Fields{
-			"storagedriver": "sqlite",
-			"logdriver":     "standard",
-			"version":       version.Version,
+			"version": version.Version,
 		}).Fatal(err)
 	}
 	defer p.End()

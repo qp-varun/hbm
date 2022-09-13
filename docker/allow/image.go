@@ -52,9 +52,7 @@ func AllowImage(img string, config *types.Config) bool {
 	p, err := policyobj.New("sqlite", config.AppPath)
 	if err != nil {
 		log.WithFields(log.Fields{
-			"storagedriver": "sqlite",
-			"logdriver":     "standard",
-			"version":       version.Version,
+			"version": version.Version,
 		}).Fatal(err)
 	}
 	defer p.End()
