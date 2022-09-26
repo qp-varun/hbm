@@ -92,7 +92,6 @@ func runInfo(cmd *cobra.Command, args []string) {
 
 	fmt.Println("Server Version:", version.Version)
 	fmt.Println("Storage Driver: sqlite")
-	fmt.Println("Logging Driver: standard")
 	fmt.Println("Harbormaster Root Dir:", adf.AppPath)
 	fmt.Println("Docker AuthZ Plugin Enabled:", pluginEnabled())
 }
