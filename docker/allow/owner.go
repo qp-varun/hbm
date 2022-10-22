@@ -1,6 +1,7 @@
 package allow
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
 
@@ -12,8 +13,6 @@ import (
 )
 
 func ContainerOwner(req authorization.Request, config *types.Config) *types.AllowResult {
-	ar := &types.AllowResult{Allow: false}
-
 	p, err := policyobj.New("sqlite", config.AppPath)
 	if err != nil {
 		log.WithFields(log.Fields{
@@ -24,19 +23,26 @@ func ContainerOwner(req authorization.Request, config *types.Config) *types.Allo
 
 	u, err := url.ParseRequestURI(req.RequestURI)
 	if err != nil {
-		return ar
+		return &types.AllowResult{Allow: false}
 	}
 
 	ts := strings.Trim(u.Path, "/")
 	up := strings.Split(ts, "/") // api version / type / id
 	if len(up) < 3 {
-		return ar
+		return &types.AllowResult{Allow: false}
 	}
 	if up[1] != "containers" {
-		return ar
+		return &types.AllowResult{Allow: false}
 	}
 
-	ar.Allow = p.ValidateOwner(config.Username, "containers", up[2])
+	if !p.ValidateOwner(config.Username, "containers", up[2]) {
+		return &types.AllowResult{
+			Allow: false,
+			Msg: map[string]string{
+				"text": fmt.Sprintf("Container %s is not owned by %s", up[2], config.Username),
+			},
+		}
+	}
 
-	return ar
+	return &types.AllowResult{Allow: true}
 }
