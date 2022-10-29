@@ -19,7 +19,7 @@ require (
 	github.com/Microsoft/go-winio v0.4.8-0.20180501170546-ab35fc04b636 // indirect
 	github.com/coreos/go-systemd v0.0.0-20180409111510-d1b7d058aa2a // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
-	github.com/docker/distribution v2.6.0-rc.1.0.20180327202408-83389a148052+incompatible // indirect
+	github.com/docker/distribution v2.8.1+incompatible // indirect
 	github.com/docker/go-units v0.3.3 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
