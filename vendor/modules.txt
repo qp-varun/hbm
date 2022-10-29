@@ -43,8 +43,8 @@ github.com/docker/go-plugins-helpers/sdk
 # github.com/docker/go-units v0.3.3
 ## explicit
 github.com/docker/go-units
-# github.com/gogo/protobuf v1.0.1-0.20180330174643-1ef32a8b9fc3
-## explicit
+# github.com/gogo/protobuf v1.3.2
+## explicit; go 1.15
 github.com/gogo/protobuf/proto
 # github.com/google/go-cmp v0.5.9
 ## explicit; go 1.13

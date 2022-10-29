@@ -21,7 +21,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/docker/distribution v2.6.0-rc.1.0.20180327202408-83389a148052+incompatible // indirect
 	github.com/docker/go-units v0.3.3 // indirect
-	github.com/gogo/protobuf v1.0.1-0.20180330174643-1ef32a8b9fc3 // indirect
+	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jinzhu/inflection v1.0.1-0.20210111022912-b5281034e75e // indirect
