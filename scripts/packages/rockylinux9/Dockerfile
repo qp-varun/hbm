@@ -1,4 +1,4 @@
-FROM centos:7
+FROM rockylinux:9.1
 
 COPY entrypoint.sh /entrypoint.sh
 COPY build /usr/local/src/hbm
