@@ -37,16 +37,6 @@ if [ $VERSION_OK -eq 0 ]; then
 	exit 100
 fi
 
-if [ -n "$TRAVIS" ]; then
-	mkdir -p "${HOME}/.docker"
-	echo -e "{\n\t\"auths\": {\n\t\t\"https://index.docker.io/v1/\": {\n\t\t\t\"auth\": \"${DOCKER_AUTH_TOKEN}\"\n\t\t}\n\t}\n}" > ${HOME}/.docker/config.json
-
-	if [ -z "$TRAVIS_TAG" ]; then
-		echo "Only release on Tag"
-		exit
-	fi
-fi
-
 ./.github-release release --user "${GITHUB_USER}" --repo "${REPO_NAME}" --tag "${VERSION}" --description "$(get-tag-message)" --pre-release --draft
 
 upload_file "bin"
