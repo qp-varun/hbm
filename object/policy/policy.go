@@ -7,6 +7,7 @@ import (
 	"github.com/kassisol/hbm/object/types"
 	"github.com/kassisol/hbm/storage"
 	"github.com/kassisol/hbm/storage/driver"
+	log "github.com/sirupsen/logrus"
 )
 
 type Policy interface {
@@ -188,6 +189,11 @@ func (c *Config) Validate(user, rType, rValue, rOptions string) bool {
 func (c *Config) ValidateOwner(user, rType, rValue string) bool {
 	switch rType {
 	case "containers":
+		log.WithFields(log.Fields{
+			"user":        user,
+			"containerid": rValue,
+		}).Debug("ValidateOwner() with")
+
 		return c.Storage.IsContainerOwner(user, rValue)
 	}
 

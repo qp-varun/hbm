@@ -2,14 +2,15 @@ package sqlite
 
 import (
 	"fmt"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func (c *Config) SetContainerOwner(username, name, containerid string) error {
 	var user User
-
 	c.DB.Where("name = ?", username).First(&user)
 	if user.ID == 0 {
-		return nil //FIXME
+		return nil // FIXME
 	}
 
 	co := ContainerOwner{
@@ -19,13 +20,34 @@ func (c *Config) SetContainerOwner(username, name, containerid string) error {
 
 	if len(name) > 1 { // container name must be at least 2 characters
 		co.Name = name
-	}
-	c.DB.Model(&ContainerOwner{}).Create(&co)
 
+	}
+	// FIXME Check for error
+	c.DB.Model(&ContainerOwner{}).Create(&co)
 	return nil
 }
 
 func (c *Config) RemoveContainerOwner(username, name, containerid string) error {
+	var co ContainerOwner
+	var u User
+
+	c.DB.Where("name = ?", username).First(&u)
+	if u.ID == 0 {
+		return nil
+	}
+
+	if len(name) > 1 {
+		result := c.DB.Debug().Where("name = ? AND user_id = ?", name, u.ID).Delete(&co)
+		log.Debug(result.RowsAffected)
+	}
+
+	result := c.DB.Debug().Where("container_id = ? AND user_id = ?", containerid, u.ID).Delete(&co)
+	log.Debug(result.RowsAffected)
+
+	prefix := fmt.Sprintf("%s%%", containerid)
+	result = c.DB.Debug().Where("container_id LIKE ? AND user_id = ?", prefix, u.ID).Delete(&co)
+	log.Debug(result.RowsAffected)
+
 	return nil
 }
 

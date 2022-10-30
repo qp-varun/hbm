@@ -54,5 +54,5 @@ type ContainerOwner struct {
 	User        User
 	UserID      uint
 	ContainerID string `gorm:"unique;"`
-	Name        string `gorm:"unique;"`
+	Name        string
 }
