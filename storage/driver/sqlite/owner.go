@@ -25,6 +25,10 @@ func (c *Config) SetContainerOwner(username, name, containerid string) error {
 	return nil
 }
 
+func (c *Config) RemoveContainerOwner(username, name, containerid string) error {
+	return nil
+}
+
 func (c *Config) IsContainerOwner(username, containerid string) bool {
 	var co ContainerOwner
 	var u User

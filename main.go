@@ -23,6 +23,8 @@ import (
 )
 
 func main() {
+	log.SetLevel(log.DebugLevel)
+
 	u := user.New()
 
 	if !u.IsRoot() {

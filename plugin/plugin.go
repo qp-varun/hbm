@@ -39,6 +39,7 @@ func NewPlugin(appPath string) (*plugin, error) {
 }
 
 func (p *plugin) AuthZReq(req authorization.Request) authorization.Response {
+	log.Debug("AuthZReq:", req)
 	uriinfo, err := uri.GetURIInfo(req)
 	if err != nil {
 		return authorization.Response{Err: err.Error()}
@@ -64,12 +65,37 @@ func (p *plugin) AuthZReq(req authorization.Request) authorization.Response {
 	return authorization.Response{Allow: true}
 }
 
-func (p *plugin) iscreatecontainer(req authorization.Request, u *url.URL) bool {
+func (p *plugin) AuthZRes(req authorization.Request) authorization.Response {
+	log.Debug("AuthZRes:", req)
+	u, err := url.Parse(req.RequestURI)
+	if err != nil {
+		log.Debug("parse error:", err)
+		return authorization.Response{Allow: true, Msg: err.Error()}
+	}
+
+	cname := u.Query().Get("name")
+	if p.isCreateContainer(req, u) {
+		log.Debug("setting owner for", cname)
+		err = p.setContainerOwner(cname, req)
+		log.Debug("setContainerOwner err:", err)
+	}
+
+	if p.isRemoveContainer(req, u) {
+		log.Debug("calling p.removeContainerOwner")
+		err = p.removeContainerOwner(cname, req)
+		log.Debug("removeContainerOwner err:", err)
+	}
+
+	return authorization.Response{Allow: true}
+}
+
+func (p *plugin) isCreateContainer(req authorization.Request, u *url.URL) bool {
+	log.Debug("entering isCreateContainer")
 	if req.ResponseStatusCode != 201 {
 		return false
 	}
-	log.Debug("is url:", u)
-	avm := regexp.MustCompile("^/v\\d+\\.\\d+/containers/create")
+
+	avm := regexp.MustCompile(`^/v\d+\.\d+/containers/create`)
 	if avm.MatchString(u.Path) || u.Path == "/containers/create" {
 		return true
 	}
@@ -77,7 +103,23 @@ func (p *plugin) iscreatecontainer(req authorization.Request, u *url.URL) bool {
 	return false
 }
 
-func (p *plugin) setcontainerowner(cname string, req authorization.Request) error {
+func (p *plugin) isRemoveContainer(req authorization.Request, u *url.URL) bool {
+	log.Debug("entering isRemoveContainer")
+	if req.ResponseStatusCode != 204 {
+		return false
+	}
+
+	avm := regexp.MustCompile(`^/v\d+\.\d+/containers/[^/]+`)
+	if avm.MatchString(u.Path) && req.RequestMethod == "DELETE" {
+		log.Debug("it is removecontainer:", u.Path)
+		log.Debug("isRemoveContainer req:", req)
+		return true
+	}
+
+	return false
+}
+
+func (p *plugin) setContainerOwner(cname string, req authorization.Request) error {
 	username := req.User
 	if username == "" {
 		username = "root"
@@ -104,23 +146,29 @@ func (p *plugin) setcontainerowner(cname string, req authorization.Request) erro
 	return nil
 }
 
-func (p *plugin) AuthZRes(req authorization.Request) authorization.Response {
-	log.Debug("resp uri real:", req.RequestURI)
-	log.Debug("req body:", string(req.RequestBody))
-	log.Debug("resp body:", string(req.ResponseBody))
-	u, err := url.Parse(req.RequestURI)
+func (p *plugin) removeContainerOwner(cname string, req authorization.Request) error {
+	username := req.User
+	if username == "" {
+		username = "root"
+	}
+
+	s, err := storage.NewDriver("sqlite", p.appPath)
 	if err != nil {
-		log.Debug("parse error:", err)
-		return authorization.Response{Allow: true, Msg: err.Error()}
+		return err
 	}
-	log.Debug(u)
+	defer s.End()
 
-	cname := u.Query().Get("name")
-	if p.iscreatecontainer(req, u) {
-		log.Debug("setting owner for", cname)
-		err = p.setcontainerowner(cname, req)
-		log.Debug("setcontainterowner err:", err)
+	var rjson struct {
+		Id string
+	}
+	err = json.Unmarshal(req.ResponseBody, &rjson)
+	if err != nil {
+		return err
 	}
 
-	return authorization.Response{Allow: true}
+	s.RemoveContainerOwner(username, cname, rjson.Id)
+
+	log.Debug("removed owner with:", username, cname, rjson.Id)
+
+	return nil
 }
