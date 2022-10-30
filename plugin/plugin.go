@@ -8,6 +8,7 @@ import (
 	"github.com/docker/go-plugins-helpers/authorization"
 	"github.com/kassisol/hbm/pkg/uri"
 	"github.com/kassisol/hbm/storage"
+	log "github.com/sirupsen/logrus"
 )
 
 type plugin struct {
@@ -67,7 +68,7 @@ func (p *plugin) iscreatecontainer(req authorization.Request, u *url.URL) bool {
 	if req.ResponseStatusCode != 201 {
 		return false
 	}
-	//fmt.Println("is url:", u)
+	log.Debug("is url:", u)
 	avm := regexp.MustCompile("^/v\\d+\\.\\d+/containers/create")
 	if avm.MatchString(u.Path) || u.Path == "/containers/create" {
 		return true
@@ -98,27 +99,27 @@ func (p *plugin) setcontainerowner(cname string, req authorization.Request) erro
 
 	s.SetContainerOwner(username, cname, rjson.Id)
 
-	//fmt.Println("did owner with:", username, cname, rjson.Id)
+	log.Debug("did owner with:", username, cname, rjson.Id)
 
 	return nil
 }
 
 func (p *plugin) AuthZRes(req authorization.Request) authorization.Response {
-	//fmt.Println("resp uri real:", req.RequestURI)
-	//fmt.Println("req body:", string(req.RequestBody))
-	//fmt.Println("resp body:", string(req.ResponseBody))
+	log.Debug("resp uri real:", req.RequestURI)
+	log.Debug("req body:", string(req.RequestBody))
+	log.Debug("resp body:", string(req.ResponseBody))
 	u, err := url.Parse(req.RequestURI)
 	if err != nil {
-		//fmt.Println("parse error:", err)
+		log.Debug("parse error:", err)
 		return authorization.Response{Allow: true, Msg: err.Error()}
 	}
-	//fmt.Println(u)
+	log.Debug(u)
 
 	cname := u.Query().Get("name")
 	if p.iscreatecontainer(req, u) {
-		//fmt.Print("setting owner for", cname)
+		log.Debug("setting owner for", cname)
 		err = p.setcontainerowner(cname, req)
-		//fmt.Println("setcontainterowner err:", err)
+		log.Debug("setcontainterowner err:", err)
 	}
 
 	return authorization.Response{Allow: true}
