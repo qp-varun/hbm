@@ -14,7 +14,7 @@ import (
 )
 
 func VolumeCreate(req authorization.Request, config *types.Config) *types.AllowResult {
-	vol := &volume.VolumeCreateBody{}
+	vol := &volume.CreateOptions{}
 
 	err := json.Decode(req.RequestBody, vol)
 	if err != nil {

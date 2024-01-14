@@ -23,7 +23,7 @@ func ImageCreate(req authorization.Request, config *types.Config) *types.AllowRe
 		return &types.AllowResult{
 			Allow: false,
 			Msg: map[string]string{
-				"text": fmt.Sprintf("Could not parse URL query"),
+				"text": "Could not parse URL query",
 			},
 		}
 	}
