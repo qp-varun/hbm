@@ -34,6 +34,11 @@ func GetUris() *uri.URIs {
 	uris.Register("PUT", `^/containers/(.+)/archive`, allow.ContainerOwner, "container_archive_extract", "archive", "Upload a tar archive to be extracted to a path in the filesystem of container id")
 	uris.Register("POST", `^/containers/prune`, allow.True, "container_prune", "container prune", "Delete stopped containers")
 
+	// Buildkit
+	uris.Register("POST", `^/containers/buildx_buildkit_default/exec`, allow.True, "buildkit", "build", "Buildkit builder")
+	uris.Register("POST", `^/grpc`, allow.True, "buildkit", "buildkit", "Initialize grpc session")
+	uris.Register("POST", `^/session`, allow.True, "session", "session", "Initialize interactive session")
+
 	uris.Register("GET", `^/images/json`, allow.True, "image_list", "image ls", "Returns a list of images on the server")
 	uris.Register("POST", `^/build`, allow.True, "image_build", "image build", "Build an image from a tar archive with a Dockerfile in it")
 	uris.Register("POST", `^/images/create`, allow.ImageCreate, "image_create", "image pull", "Create an image by either pulling it from a registry or importing it")
@@ -97,8 +102,6 @@ func GetUris() *uri.URIs {
 	uris.Register("GET", `^/secrets/(.+)`, allow.True, "secret_inspect", "secret inspect", "Inspect a secret")
 	uris.Register("DELETE", `^/secrets/(.+)`, allow.True, "secret_remove", "secret rm", "Delete a secret")
 	uris.Register("POST", `^/secrets/(.+)/update`, allow.True, "secret_update", "secret update", "Update a secret")
-
-	uris.Register("POST", `^/session`, allow.True, "session", "session", "Initialize interactive session")
 
 	uris.Register("GET", `^/configs`, allow.True, "config_list", "config ls", "List configs")
 	uris.Register("POST", `^/configs/create`, allow.True, "config_create", "config create", "Create a config")
