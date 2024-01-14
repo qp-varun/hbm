@@ -1,6 +1,6 @@
 module github.com/kassisol/hbm
 
-go 1.19
+go 1.20
 
 require (
 	github.com/docker/docker v20.10.18+incompatible
