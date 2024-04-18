@@ -35,8 +35,8 @@ func GetUris() *uri.URIs {
 	uris.Register("POST", `^/containers/prune`, allow.True, "container_prune", "container prune", "Delete stopped containers")
 
 	// Buildkit
-	uris.Register("POST", `^/containers/buildx_buildkit_default/exec`, allow.True, "buildkit", "build", "Buildkit builder")
-	uris.Register("POST", `^/grpc`, allow.True, "buildkit", "buildkit", "Initialize grpc session")
+	uris.Register("POST", `^/containers/buildx_buildkit_default/exec`, allow.True, "buildkit", "buildkit", "Access Buildkit default builder")
+	uris.Register("POST", `^/grpc`, allow.True, "grpc", "grpc", "Initialize grpc session")
 	uris.Register("POST", `^/session`, allow.True, "session", "session", "Initialize interactive session")
 
 	uris.Register("GET", `^/images/json`, allow.True, "image_list", "image ls", "Returns a list of images on the server")
