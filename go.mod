@@ -3,7 +3,7 @@ module github.com/kassisol/hbm
 go 1.20
 
 require (
-	github.com/docker/docker v24.0.7+incompatible
+	github.com/docker/docker v24.0.9+incompatible
 	github.com/docker/go-connections v0.5.0
 	github.com/docker/go-plugins-helpers v0.0.0-20211224144127-6eecb7beb651
 	github.com/jinzhu/gorm v1.9.17-0.20211120011537-5c235b72a414
