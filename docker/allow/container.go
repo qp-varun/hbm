@@ -429,10 +429,10 @@ func AllowVolume(vol string, config *types.Config) bool {
 		return false
 	}
 
-	evaluatedVol, _ := filepath.EvalSymlinks(vol)
-	if strings.Compare(vol, evaluatedVol) != 0 {
-		return false
-	}
+	// evaluatedVol, _ := filepath.EvalSymlinks(vol)
+	// if strings.Compare(vol, evaluatedVol) != 0 {
+	// 	return false
+	// }
 
 	// Check for one volume path
 	vo := objtypes.VolumeOptions{
